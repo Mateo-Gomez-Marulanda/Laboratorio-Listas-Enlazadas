@@ -38,6 +38,11 @@ class WebSistem {
     }
 
     public void visitarPaginaWeb(PaginaWeb paginaWeb) {
+        // Si estamos en medio del historial, eliminar todas las páginas futuras
+        if (paginaActual != null && paginaActual != historial.getNodoUltimo()) {
+            eliminarPaginasFuturas();
+        }
+
         historial.agregarfinal(paginaWeb);
         paginaActual = historial.getNodoUltimo();
         mostrarPaginaActual();
@@ -47,7 +52,15 @@ class WebSistem {
         historial.eliminar(paginaActual.getValorNodo());
     }
 
-    public void cerrarPaginasFuturs(){}
+    private void eliminarPaginasFuturas() {
+        NodoDoble<PaginaWeb> nodoActual = paginaActual.getSiguienteNodo();
+
+        while (nodoActual != null) {
+            NodoDoble<PaginaWeb> siguiente = nodoActual.getSiguienteNodo();
+            historial.eliminar(nodoActual.getValorNodo());
+            nodoActual = siguiente;
+        }
+    }
 
     public void avanzarPagina() {
 
